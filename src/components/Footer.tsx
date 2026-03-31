@@ -27,9 +27,9 @@ const Footer = () => {
           <div className="space-y-3">
             <h4 className="font-heading font-semibold">Contact Us</h4>
             <div className="flex flex-col gap-2 text-sm text-primary-foreground/70">
-              <span className="flex items-center gap-2"><Phone className="h-4 w-4" /> +234 801 234 5678</span>
+              <span className="flex items-center gap-2"><Phone className="h-4 w-4" /> +234 913 250 2303</span>
               <span className="flex items-center gap-2"><Mail className="h-4 w-4" /> info@premiumsolar.ng</span>
-              <span className="flex items-center gap-2"><MapPin className="h-4 w-4" /> Lagos, Nigeria</span>
+              <span className="flex items-center gap-2"><MapPin className="h-4 w-4" /> Kaduna, Nigeria</span>
             </div>
           </div>
         </div>
