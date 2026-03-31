@@ -6,8 +6,18 @@ import chargeController from "@/assets/charge-controller.jpg";
 import dvrRecorder from "@/assets/dvr-recorder.jpg";
 import bulletCamera from "@/assets/bullet-camera.jpg";
 import hybridInverter from "@/assets/hybrid-inverter.jpg";
+import bulletCameraOutdoor from "@/assets/bullet-camera-outdoor.jpg";
+import hybridChargeController from "@/assets/hybrid-charge-controller.jpg";
+import mpptChargeController from "@/assets/mppt-charge-controller.jpg";
+import cctvCable from "@/assets/cctv-cable.jpg";
+import domeCameraIndoor from "@/assets/dome-camera-indoor.jpg";
+import felicityInverter from "@/assets/felicity-inverter.png";
+import felicityLithiumBattery from "@/assets/felicity-lithium-battery.webp";
+import solarPanel640w from "@/assets/solar-panel-640w.png";
+import eastmanTubularBattery from "@/assets/eastman-tubular-battery.jpg";
+import hausstromTubularBattery from "@/assets/hausstrom-tubular-battery.jpg";
 
-export type Category = "Solar" | "Inverter" | "CCTV" | "All";
+export type Category = "Solar" | "Inverter" | "CCTV" | "Battery" | "All";
 
 export interface Product {
   id: string;
@@ -52,7 +62,7 @@ export const products: Product[] = [
     description: "Deep cycle lithium iron phosphate battery. 6000+ cycle life with built-in BMS.",
     price: 950000,
     image: solarBattery,
-    category: "Solar",
+    category: "Battery",
     badge: "Premium",
   },
   {
@@ -87,6 +97,91 @@ export const products: Product[] = [
     image: bulletCamera,
     category: "CCTV",
     badge: "New",
+  },
+  {
+    id: "9",
+    name: "Outdoor Bullet CCTV Camera",
+    description: "Heavy-duty outdoor bullet camera with infrared LEDs for clear night vision up to 40m. Weatherproof metal body.",
+    price: 45000,
+    image: bulletCameraOutdoor,
+    category: "CCTV",
+  },
+  {
+    id: "10",
+    name: "Felicity 5KVA Hybrid Inverter/Charger",
+    description: "Felicity Solar hybrid inverter with built-in MPPT charge controller. Supports solar, grid, and generator input.",
+    price: 850000,
+    image: hybridChargeController,
+    category: "Inverter",
+    badge: "Popular",
+  },
+  {
+    id: "11",
+    name: "80A MPPT Solar Charge Controller",
+    description: "High-capacity MPPT charge controller with LCD display. Supports 12V/24V/48V battery systems. Gold rugged casing.",
+    price: 165000,
+    image: mpptChargeController,
+    category: "Solar",
+  },
+  {
+    id: "12",
+    name: "CCTV Coaxial Cable (100m)",
+    description: "Premium RG59 coaxial cable with power cable for CCTV installations. 100-metre roll with copper core.",
+    price: 28000,
+    image: cctvCable,
+    category: "CCTV",
+  },
+  {
+    id: "13",
+    name: "Indoor Dome CCTV Camera",
+    description: "Compact indoor dome camera with IR night vision. Easy ceiling mount installation. Ideal for offices and shops.",
+    price: 25000,
+    image: domeCameraIndoor,
+    category: "CCTV",
+  },
+  {
+    id: "14",
+    name: "Felicity 10KVA Inverter",
+    description: "Felicity Solar 10KVA pure sine wave inverter. High-capacity unit for large homes and commercial use.",
+    price: 1450000,
+    image: felicityInverter,
+    category: "Inverter",
+    badge: "Premium",
+  },
+  {
+    id: "15",
+    name: "Felicity 17.5KWh Lithium Battery",
+    description: "Felicity 17.5KWh 51.2V 350Ah lithium iron phosphate battery. Built-in BMS with 6000+ cycle life. On wheels for easy positioning.",
+    price: 4500000,
+    image: felicityLithiumBattery,
+    category: "Battery",
+    badge: "Premium",
+  },
+  {
+    id: "16",
+    name: "640W Monocrystalline Solar Panel",
+    description: "High-output 640W monocrystalline solar panel. Half-cut cell technology for maximum efficiency. Ideal for large systems.",
+    price: 320000,
+    image: solarPanel640w,
+    category: "Solar",
+    badge: "New",
+  },
+  {
+    id: "17",
+    name: "Eastman 200Ah Tubular Battery",
+    description: "Eastman 12V 200Ah tall tubular battery. Designed for inverter and solar backup systems. Long-lasting deep cycle performance.",
+    price: 185000,
+    image: eastmanTubularBattery,
+    category: "Battery",
+  },
+  {
+    id: "18",
+    name: "Haus Strom 200Ah Tubular Battery",
+    description: "Haus Strom HS-20055 tall tubular battery. Long backup capability with deep cycle design for solar and inverter use.",
+    price: 195000,
+    image: hausstromTubularBattery,
+    category: "Battery",
+    badge: "Best Seller",
   },
 ];
 
