@@ -1,50 +1,18 @@
-import { useState, useCallback } from "react";
-import { toast } from "sonner";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
-import CategoryFilter from "@/components/CategoryFilter";
 import ProductCard from "@/components/ProductCard";
-import CartSheet, { type CartItem } from "@/components/CartSheet";
 import Footer from "@/components/Footer";
-import { products, type Category, type Product } from "@/data/products";
+import { products } from "@/data/products";
 
 const Index = () => {
-  const [activeCategory, setActiveCategory] = useState<Category>("All");
-  const [cart, setCart] = useState<CartItem[]>([]);
-  const [cartOpen, setCartOpen] = useState(false);
-
-  const filtered = activeCategory === "All"
-    ? products
-    : products.filter((p) => p.category === activeCategory);
-
-  const addToCart = useCallback((product: Product) => {
-    setCart((prev) => {
-      const existing = prev.find((i) => i.id === product.id);
-      if (existing) {
-        return prev.map((i) => i.id === product.id ? { ...i, quantity: i.quantity + 1 } : i);
-      }
-      return [...prev, { ...product, quantity: 1 }];
-    });
-    toast.success(`${product.name} added to cart`);
-  }, []);
-
-  const updateQuantity = useCallback((id: string, delta: number) => {
-    setCart((prev) =>
-      prev
-        .map((i) => (i.id === id ? { ...i, quantity: i.quantity + delta } : i))
-        .filter((i) => i.quantity > 0)
-    );
-  }, []);
-
-  const removeItem = useCallback((id: string) => {
-    setCart((prev) => prev.filter((i) => i.id !== id));
-  }, []);
-
-  const cartCount = cart.reduce((sum, i) => sum + i.quantity, 0);
+  const featured = products.slice(0, 8);
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar cartCount={cartCount} onCartOpen={() => setCartOpen(true)} />
+      <Navbar cartCount={0} onCartOpen={() => {}} />
       <HeroSection />
 
       <section id="products" className="container py-16">
@@ -54,20 +22,24 @@ const Index = () => {
               Our Products
             </h2>
             <p className="text-sm text-muted-foreground mt-1">
-              Browse our range of premium solar, inverter and CCTV products
+              Browse our range of premium solar, inverter, battery and CCTV products
             </p>
           </div>
-          <CategoryFilter active={activeCategory} onChange={setActiveCategory} />
+          <Link to="/products">
+            <Button variant="outline" className="gap-2">
+              View All Products <ArrowRight className="h-4 w-4" />
+            </Button>
+          </Link>
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {filtered.map((product, i) => (
+          {featured.map((product, i) => (
             <div
               key={product.id}
               className="animate-fade-in-up"
               style={{ animationDelay: `${i * 80}ms`, opacity: 0 }}
             >
-              <ProductCard product={product} onAddToCart={addToCart} />
+              <ProductCard product={product} showPrice={false} />
             </div>
           ))}
         </div>
@@ -100,13 +72,6 @@ const Index = () => {
       </section>
 
       <Footer />
-      <CartSheet
-        open={cartOpen}
-        onClose={() => setCartOpen(false)}
-        items={cart}
-        onUpdateQuantity={updateQuantity}
-        onRemove={removeItem}
-      />
     </div>
   );
 };
