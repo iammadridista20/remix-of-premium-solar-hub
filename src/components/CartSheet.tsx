@@ -90,6 +90,21 @@ const CartSheet = ({ open, onClose, items, onUpdateQuantity, onRemove }: CartShe
             >
               Checkout
             </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="w-full gap-2 border-green-500 text-green-600 hover:bg-green-50 font-semibold"
+              onClick={() => {
+                const message = items
+                  .map((i) => `• ${i.name} x${i.quantity} — ${formatNaira(i.price * i.quantity)}`)
+                  .join("%0A");
+                const text = `Hello, I'd like to order:%0A${message}%0A%0ATotal: ${formatNaira(total)}`;
+                window.open(`https://wa.me/2349132502303?text=${text}`, "_blank");
+              }}
+            >
+              <MessageCircle className="h-5 w-5" />
+              Order via WhatsApp
+            </Button>
           </div>
         )}
       </div>
