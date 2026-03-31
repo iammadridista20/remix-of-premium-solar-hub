@@ -16,6 +16,15 @@ import felicityLithiumBattery from "@/assets/felicity-lithium-battery.webp";
 import solarPanel640w from "@/assets/solar-panel-640w.png";
 import eastmanTubularBattery from "@/assets/eastman-tubular-battery.jpg";
 import hausstromTubularBattery from "@/assets/hausstrom-tubular-battery.jpg";
+import cctvCable2 from "@/assets/cctv-cable-2.jpg";
+import domeCameraIndoor2 from "@/assets/dome-camera-indoor-2.jpg";
+import bulletCameraWhite from "@/assets/bullet-camera-white.jpg";
+import dvr32ch from "@/assets/dvr-32ch.jpg";
+import hikvisionDvr from "@/assets/hikvision-dvr.webp";
+import felicityInverter2 from "@/assets/felicity-inverter-2.webp";
+import solarPanel250w from "@/assets/solar-panel-250w.png";
+import rg59CableRoll from "@/assets/rg59-cable-roll.jpg";
+import starplusTubularBattery from "@/assets/starplus-tubular-battery.jpg";
 
 export type Category = "Solar" | "Inverter" | "CCTV" | "Battery" | "All";
 
