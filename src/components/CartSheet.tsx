@@ -1,4 +1,4 @@
-import { Minus, Plus, Trash2, X } from "lucide-react";
+import { Minus, Plus, Trash2, X, MessageCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import type { Product } from "@/data/products";
