@@ -80,7 +80,14 @@ const CartSheet = ({ open, onClose, items, onUpdateQuantity, onRemove }: CartShe
               <span>Total</span>
               <span className="text-secondary">{formatNaira(total)}</span>
             </div>
-            <Button className="w-full gradient-accent text-accent-foreground font-semibold shadow-accent border-0 hover:opacity-90" size="lg">
+            <Button
+              className="w-full gradient-accent text-accent-foreground font-semibold shadow-accent border-0 hover:opacity-90"
+              size="lg"
+              onClick={() => {
+                onClose();
+                navigate("/checkout", { state: { items } });
+              }}
+            >
               Checkout
             </Button>
           </div>
