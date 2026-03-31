@@ -6,7 +6,8 @@ import { formatNaira } from "@/data/products";
 
 interface ProductCardProps {
   product: Product;
-  onAddToCart: (product: Product) => void;
+  onAddToCart?: (product: Product) => void;
+  showPrice?: boolean;
 }
 
 const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
