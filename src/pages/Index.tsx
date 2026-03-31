@@ -1,16 +1,108 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState, useCallback } from "react";
+import { toast } from "sonner";
+import Navbar from "@/components/Navbar";
+import HeroSection from "@/components/HeroSection";
+import CategoryFilter from "@/components/CategoryFilter";
+import ProductCard from "@/components/ProductCard";
+import CartSheet, { type CartItem } from "@/components/CartSheet";
+import Footer from "@/components/Footer";
+import { products, type Category, type Product } from "@/data/products";
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
+const Index = () => {
+  const [activeCategory, setActiveCategory] = useState<Category>("All");
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [cartOpen, setCartOpen] = useState(false);
+
+  const filtered = activeCategory === "All"
+    ? products
+    : products.filter((p) => p.category === activeCategory);
+
+  const addToCart = useCallback((product: Product) => {
+    setCart((prev) => {
+      const existing = prev.find((i) => i.id === product.id);
+      if (existing) {
+        return prev.map((i) => i.id === product.id ? { ...i, quantity: i.quantity + 1 } : i);
+      }
+      return [...prev, { ...product, quantity: 1 }];
+    });
+    toast.success(`${product.name} added to cart`);
+  }, []);
+
+  const updateQuantity = useCallback((id: string, delta: number) => {
+    setCart((prev) =>
+      prev
+        .map((i) => (i.id === id ? { ...i, quantity: i.quantity + delta } : i))
+        .filter((i) => i.quantity > 0)
+    );
+  }, []);
+
+  const removeItem = useCallback((id: string) => {
+    setCart((prev) => prev.filter((i) => i.id !== id));
+  }, []);
+
+  const cartCount = cart.reduce((sum, i) => sum + i.quantity, 0);
+
   return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
+    <div className="min-h-screen flex flex-col">
+      <Navbar cartCount={cartCount} onCartOpen={() => setCartOpen(true)} />
+      <HeroSection />
+
+      <section id="products" className="container py-16">
+        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h2 className="font-heading text-2xl font-bold text-foreground md:text-3xl">
+              Our Products
+            </h2>
+            <p className="text-sm text-muted-foreground mt-1">
+              Browse our range of premium solar, inverter and CCTV products
+            </p>
+          </div>
+          <CategoryFilter active={activeCategory} onChange={setActiveCategory} />
+        </div>
+
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {filtered.map((product, i) => (
+            <div
+              key={product.id}
+              className="animate-fade-in-up"
+              style={{ animationDelay: `${i * 80}ms`, opacity: 0 }}
+            >
+              <ProductCard product={product} onAddToCart={addToCart} />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section id="about" className="bg-muted/50">
+        <div className="container py-16 text-center">
+          <h2 className="font-heading text-2xl font-bold text-foreground md:text-3xl mb-4">
+            Why Choose Us?
+          </h2>
+          <div className="grid gap-8 md:grid-cols-3 mt-8">
+            {[
+              { title: "Quality Guaranteed", desc: "All products come with manufacturer warranty and our satisfaction guarantee." },
+              { title: "Expert Installation", desc: "Our certified engineers handle professional installation across Nigeria." },
+              { title: "24/7 Support", desc: "Round-the-clock customer support and after-sales service." },
+            ].map((item) => (
+              <div key={item.title} className="rounded-lg bg-card p-6 shadow-card">
+                <h3 className="font-heading text-lg font-semibold text-card-foreground mb-2">{item.title}</h3>
+                <p className="text-sm text-muted-foreground">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+      <CartSheet
+        open={cartOpen}
+        onClose={() => setCartOpen(false)}
+        items={cart}
+        onUpdateQuantity={updateQuantity}
+        onRemove={removeItem}
+      />
     </div>
   );
 };
-
-const Index = PlaceholderIndex;
 
 export default Index;
