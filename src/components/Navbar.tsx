@@ -50,16 +50,10 @@ const Navbar = ({ cartCount, onCartOpen }: NavbarProps) => {
 
       {mobileOpen && (
         <nav className="md:hidden border-t bg-card p-4 space-y-3">
-          {["Home", "Products", "About", "Contact"].map((item) => (
-            <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              onClick={() => setMobileOpen(false)}
-              className="block text-sm font-medium text-muted-foreground hover:text-foreground"
-            >
-              {item}
-            </a>
-          ))}
+          <Link to="/" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-muted-foreground hover:text-foreground">Home</Link>
+          <Link to="/products" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-muted-foreground hover:text-foreground">Products</Link>
+          <a href="/#about" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-muted-foreground hover:text-foreground">About</a>
+          <a href="/#contact" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-muted-foreground hover:text-foreground">Contact</a>
         </nav>
       )}
     </header>
