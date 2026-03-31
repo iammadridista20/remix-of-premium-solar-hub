@@ -1,4 +1,5 @@
 import { Minus, Plus, Trash2, X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import type { Product } from "@/data/products";
 import { formatNaira } from "@/data/products";
@@ -16,6 +17,7 @@ interface CartSheetProps {
 }
 
 const CartSheet = ({ open, onClose, items, onUpdateQuantity, onRemove }: CartSheetProps) => {
+  const navigate = useNavigate();
   const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
@@ -78,7 +80,14 @@ const CartSheet = ({ open, onClose, items, onUpdateQuantity, onRemove }: CartShe
               <span>Total</span>
               <span className="text-secondary">{formatNaira(total)}</span>
             </div>
-            <Button className="w-full gradient-accent text-accent-foreground font-semibold shadow-accent border-0 hover:opacity-90" size="lg">
+            <Button
+              className="w-full gradient-accent text-accent-foreground font-semibold shadow-accent border-0 hover:opacity-90"
+              size="lg"
+              onClick={() => {
+                onClose();
+                navigate("/checkout", { state: { items } });
+              }}
+            >
               Checkout
             </Button>
           </div>
