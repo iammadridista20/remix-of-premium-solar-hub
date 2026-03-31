@@ -17,6 +17,7 @@ interface CartSheetProps {
 }
 
 const CartSheet = ({ open, onClose, items, onUpdateQuantity, onRemove }: CartSheetProps) => {
+  const navigate = useNavigate();
   const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
