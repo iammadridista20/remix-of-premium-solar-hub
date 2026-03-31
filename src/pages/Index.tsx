@@ -74,18 +74,24 @@ const Index = () => {
       </section>
 
       <section id="about" className="bg-muted/50">
-        <div className="container py-16 text-center">
-          <h2 className="font-heading text-2xl font-bold text-foreground md:text-3xl mb-4">
-            Why Choose Us?
-          </h2>
-          <div className="grid gap-8 md:grid-cols-3 mt-8">
+        <div className="container py-16">
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <h2 className="font-heading text-2xl font-bold text-foreground md:text-3xl mb-4">
+              About Premium Solar
+            </h2>
+            <p className="text-muted-foreground leading-relaxed">
+              <span className="font-semibold text-foreground">PREMIUM SOLAR</span> is a green energy company dedicated to the sales and professional installation of solar panels, inverters, batteries, and CCTV security systems. We are committed to providing affordable, reliable, and sustainable energy and security solutions across Nigeria.
+            </p>
+          </div>
+          <h3 className="font-heading text-xl font-bold text-foreground text-center mb-6">Why Choose Us?</h3>
+          <div className="grid gap-8 md:grid-cols-3">
             {[
               { title: "Quality Guaranteed", desc: "All products come with manufacturer warranty and our satisfaction guarantee." },
-              { title: "Expert Installation", desc: "Our certified engineers handle professional installation across Nigeria." },
+              { title: "Expert Installation", desc: "Our certified engineers handle professional installation of solar, inverter, and CCTV systems across Nigeria." },
               { title: "24/7 Support", desc: "Round-the-clock customer support and after-sales service." },
             ].map((item) => (
               <div key={item.title} className="rounded-lg bg-card p-6 shadow-card">
-                <h3 className="font-heading text-lg font-semibold text-card-foreground mb-2">{item.title}</h3>
+                <h4 className="font-heading text-lg font-semibold text-card-foreground mb-2">{item.title}</h4>
                 <p className="text-sm text-muted-foreground">{item.desc}</p>
               </div>
             ))}
