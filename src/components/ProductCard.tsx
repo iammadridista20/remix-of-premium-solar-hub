@@ -6,10 +6,11 @@ import { formatNaira } from "@/data/products";
 
 interface ProductCardProps {
   product: Product;
-  onAddToCart: (product: Product) => void;
+  onAddToCart?: (product: Product) => void;
+  showPrice?: boolean;
 }
 
-const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
+const ProductCard = ({ product, onAddToCart, showPrice = true }: ProductCardProps) => {
   return (
     <div className="group relative flex flex-col overflow-hidden rounded-lg bg-card shadow-card transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1">
       <div className="relative aspect-square overflow-hidden bg-muted">
@@ -37,20 +38,24 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
         <p className="text-sm leading-relaxed text-muted-foreground line-clamp-2">
           {product.description}
         </p>
-        <div className="mt-auto flex items-center justify-between pt-3">
-          <span className="font-heading text-lg font-bold text-secondary">
-            {formatNaira(product.price)}
-          </span>
-          <Button
-            size="sm"
-            variant="default"
-            onClick={() => onAddToCart(product)}
-            className="gap-1.5"
-          >
-            <ShoppingCart className="h-4 w-4" />
-            Add
-          </Button>
-        </div>
+        {showPrice && (
+          <div className="mt-auto flex items-center justify-between pt-3">
+            <span className="font-heading text-lg font-bold text-secondary">
+              {formatNaira(product.price)}
+            </span>
+            {onAddToCart && (
+              <Button
+                size="sm"
+                variant="default"
+                onClick={() => onAddToCart(product)}
+                className="gap-1.5"
+              >
+                <ShoppingCart className="h-4 w-4" />
+                Add
+              </Button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

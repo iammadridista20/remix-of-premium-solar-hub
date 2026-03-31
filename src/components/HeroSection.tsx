@@ -1,8 +1,10 @@
 import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import heroBanner from "@/assets/hero-banner.jpg";
 
 const HeroSection = () => {
+  const navigate = useNavigate();
   return (
     <section id="home" className="relative overflow-hidden">
       <div className="absolute inset-0">
@@ -29,7 +31,7 @@ const HeroSection = () => {
         <Button
           size="lg"
           className="gradient-accent text-accent-foreground font-semibold shadow-accent border-0 hover:opacity-90 gap-2 mt-2"
-          onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
+          onClick={() => navigate("/products")}
         >
           Shop Now
           <ArrowRight className="h-4 w-4" />

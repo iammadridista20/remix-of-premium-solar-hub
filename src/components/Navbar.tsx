@@ -1,5 +1,6 @@
 import { ShoppingCart, Sun, Menu, X } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 interface NavbarProps {
   cartCount: number;
@@ -12,23 +13,18 @@ const Navbar = ({ cartCount, onCartOpen }: NavbarProps) => {
   return (
     <header className="sticky top-0 z-40 border-b bg-card/80 backdrop-blur-md">
       <div className="container flex h-16 items-center justify-between">
-        <div className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-2">
           <Sun className="h-7 w-7 text-secondary" />
           <span className="font-heading text-lg font-bold text-foreground leading-tight">
             Premium Solar
           </span>
-        </div>
+        </Link>
 
         <nav className="hidden md:flex items-center gap-6">
-          {["Home", "Products", "About", "Contact"].map((item) => (
-            <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {item}
-            </a>
-          ))}
+          <Link to="/" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Home</Link>
+          <Link to="/products" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Products</Link>
+          <a href="/#about" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">About</a>
+          <a href="/#contact" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Contact</a>
         </nav>
 
         <div className="flex items-center gap-3">
@@ -54,16 +50,10 @@ const Navbar = ({ cartCount, onCartOpen }: NavbarProps) => {
 
       {mobileOpen && (
         <nav className="md:hidden border-t bg-card p-4 space-y-3">
-          {["Home", "Products", "About", "Contact"].map((item) => (
-            <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              onClick={() => setMobileOpen(false)}
-              className="block text-sm font-medium text-muted-foreground hover:text-foreground"
-            >
-              {item}
-            </a>
-          ))}
+          <Link to="/" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-muted-foreground hover:text-foreground">Home</Link>
+          <Link to="/products" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-muted-foreground hover:text-foreground">Products</Link>
+          <a href="/#about" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-muted-foreground hover:text-foreground">About</a>
+          <a href="/#contact" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-muted-foreground hover:text-foreground">Contact</a>
         </nav>
       )}
     </header>
