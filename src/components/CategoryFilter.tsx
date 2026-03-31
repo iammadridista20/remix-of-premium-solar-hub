@@ -5,7 +5,7 @@ interface CategoryFilterProps {
   onChange: (cat: Category) => void;
 }
 
-const categories: Category[] = ["All", "Solar", "Inverter", "CCTV"];
+const categories: Category[] = ["All", "Solar", "Inverter", "Battery", "CCTV"];
 
 const CategoryFilter = ({ active, onChange }: CategoryFilterProps) => {
   return (
