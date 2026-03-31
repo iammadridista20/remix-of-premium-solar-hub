@@ -16,6 +16,15 @@ import felicityLithiumBattery from "@/assets/felicity-lithium-battery.webp";
 import solarPanel640w from "@/assets/solar-panel-640w.png";
 import eastmanTubularBattery from "@/assets/eastman-tubular-battery.jpg";
 import hausstromTubularBattery from "@/assets/hausstrom-tubular-battery.jpg";
+import cctvCable2 from "@/assets/cctv-cable-2.jpg";
+import domeCameraIndoor2 from "@/assets/dome-camera-indoor-2.jpg";
+import bulletCameraWhite from "@/assets/bullet-camera-white.jpg";
+import dvr32ch from "@/assets/dvr-32ch.jpg";
+import hikvisionDvr from "@/assets/hikvision-dvr.webp";
+import felicityInverter2 from "@/assets/felicity-inverter-2.webp";
+import solarPanel250w from "@/assets/solar-panel-250w.png";
+import rg59CableRoll from "@/assets/rg59-cable-roll.jpg";
+import starplusTubularBattery from "@/assets/starplus-tubular-battery.jpg";
 
 export type Category = "Solar" | "Inverter" | "CCTV" | "Battery" | "All";
 
@@ -182,6 +191,81 @@ export const products: Product[] = [
     image: hausstromTubularBattery,
     category: "Battery",
     badge: "Best Seller",
+  },
+  {
+    id: "19",
+    name: "CCTV Siamese Cable (200m)",
+    description: "Premium RG59 siamese coaxial cable with power. 200-metre roll for large CCTV installations. Copper core for best signal.",
+    price: 48000,
+    image: cctvCable2,
+    category: "CCTV",
+  },
+  {
+    id: "20",
+    name: "2MP Indoor Dome Camera",
+    description: "Compact 2MP indoor dome camera with IR LEDs for night vision. Easy ceiling mount. Perfect for homes and offices.",
+    price: 22000,
+    image: domeCameraIndoor2,
+    category: "CCTV",
+  },
+  {
+    id: "21",
+    name: "ABUS Outdoor Bullet Camera",
+    description: "ABUS 5MP outdoor bullet camera with weatherproof housing. Clear day and night recording with smart IR.",
+    price: 65000,
+    image: bulletCameraWhite,
+    category: "CCTV",
+  },
+  {
+    id: "22",
+    name: "32-Channel DVR Recorder",
+    description: "Professional 32-channel DVR with H.265+ compression. Rack-mountable design for large-scale CCTV systems.",
+    price: 285000,
+    image: dvr32ch,
+    category: "CCTV",
+    badge: "Pro",
+  },
+  {
+    id: "23",
+    name: "Hikvision 4-Channel DVR",
+    description: "Hikvision Turbo HD 4-channel DVR. H.265 Pro+ compression with remote viewing via Hik-Connect app.",
+    price: 55000,
+    image: hikvisionDvr,
+    category: "CCTV",
+    badge: "Popular",
+  },
+  {
+    id: "24",
+    name: "Felicity 8KVA Hybrid Inverter",
+    description: "Felicity Solar 8KVA hybrid inverter with built-in MPPT. Touchscreen display, supports solar and grid input.",
+    price: 1150000,
+    image: felicityInverter2,
+    category: "Inverter",
+  },
+  {
+    id: "25",
+    name: "250W Polycrystalline Solar Panel",
+    description: "Durable 250W polycrystalline solar panel. Cost-effective option for residential solar installations with 20-year warranty.",
+    price: 115000,
+    image: solarPanel250w,
+    category: "Solar",
+  },
+  {
+    id: "26",
+    name: "RG59 Cable Roll (305m)",
+    description: "Industrial-grade RG59 coaxial cable. 305-metre spool for professional CCTV installations. Pure copper conductor.",
+    price: 65000,
+    image: rg59CableRoll,
+    category: "CCTV",
+  },
+  {
+    id: "27",
+    name: "Star Plus 220Ah Tubular Battery",
+    description: "Star Plus 12V 220Ah tall tubular battery. Heavy-duty deep cycle design for inverter and solar backup systems.",
+    price: 210000,
+    image: starplusTubularBattery,
+    category: "Battery",
+    badge: "New",
   },
 ];
 
