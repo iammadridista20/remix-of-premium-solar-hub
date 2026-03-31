@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import heroBanner from "@/assets/hero-banner.jpg";
 
 const HeroSection = () => {
+  const navigate = useNavigate();
   return (
     <section id="home" className="relative overflow-hidden">
       <div className="absolute inset-0">
