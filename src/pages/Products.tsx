@@ -76,6 +76,7 @@ const Products = () => {
       </section>
 
       <Footer />
+      <WhatsAppButton />
       <CartSheet
         open={cartOpen}
         onClose={() => setCartOpen(false)}
