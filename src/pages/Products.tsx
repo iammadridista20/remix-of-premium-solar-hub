@@ -1,10 +1,12 @@
 import { useState, useCallback } from "react";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
 import CategoryFilter from "@/components/CategoryFilter";
 import ProductCard from "@/components/ProductCard";
 import CartSheet, { type CartItem } from "@/components/CartSheet";
 import Footer from "@/components/Footer";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import { products, type Category, type Product } from "@/data/products";
 
 const Products = () => {
@@ -65,13 +67,16 @@ const Products = () => {
               className="animate-fade-in-up"
               style={{ animationDelay: `${i * 80}ms`, opacity: 0 }}
             >
-              <ProductCard product={product} onAddToCart={addToCart} showPrice={true} />
+              <Link to={`/product/${product.id}`}>
+                <ProductCard product={product} onAddToCart={addToCart} showPrice={true} />
+              </Link>
             </div>
           ))}
         </div>
       </section>
 
       <Footer />
+      <WhatsAppButton />
       <CartSheet
         open={cartOpen}
         onClose={() => setCartOpen(false)}

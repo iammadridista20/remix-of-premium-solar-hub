@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import ProductCard from "@/components/ProductCard";
 import Footer from "@/components/Footer";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import { products } from "@/data/products";
 
 const Index = () => {
@@ -39,7 +40,9 @@ const Index = () => {
               className="animate-fade-in-up"
               style={{ animationDelay: `${i * 80}ms`, opacity: 0 }}
             >
-              <ProductCard product={product} showPrice={false} />
+              <Link to={`/product/${product.id}`}>
+                <ProductCard product={product} showPrice={false} />
+              </Link>
             </div>
           ))}
         </div>
@@ -72,6 +75,7 @@ const Index = () => {
       </section>
 
       <Footer />
+      <WhatsAppButton />
     </div>
   );
 };
