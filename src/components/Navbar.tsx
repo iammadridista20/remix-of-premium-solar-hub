@@ -54,7 +54,8 @@ const Navbar = ({ cartCount, onCartOpen }: NavbarProps) => {
           <Link to="/" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-muted-foreground hover:text-foreground">Home</Link>
           <Link to="/products" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-muted-foreground hover:text-foreground">Products</Link>
           <a href="/#about" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-muted-foreground hover:text-foreground">About</a>
-          <a href="/#contact" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-muted-foreground hover:text-foreground">Contact</a>
+          <Link to="/contact" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-muted-foreground hover:text-foreground">Contact</Link>
+          <Link to="/login" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-muted-foreground hover:text-foreground">Login</Link>
         </nav>
       )}
     </header>

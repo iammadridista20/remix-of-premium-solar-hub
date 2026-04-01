@@ -40,7 +40,9 @@ const Index = () => {
               className="animate-fade-in-up"
               style={{ animationDelay: `${i * 80}ms`, opacity: 0 }}
             >
-              <ProductCard product={product} showPrice={false} />
+              <Link to={`/product/${product.id}`}>
+                <ProductCard product={product} showPrice={false} />
+              </Link>
             </div>
           ))}
         </div>
