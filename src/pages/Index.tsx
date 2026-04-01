@@ -73,6 +73,7 @@ const Index = () => {
       </section>
 
       <Footer />
+      <WhatsAppButton />
     </div>
   );
 };
