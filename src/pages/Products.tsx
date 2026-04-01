@@ -67,7 +67,9 @@ const Products = () => {
               className="animate-fade-in-up"
               style={{ animationDelay: `${i * 80}ms`, opacity: 0 }}
             >
-              <ProductCard product={product} onAddToCart={addToCart} showPrice={true} />
+              <Link to={`/product/${product.id}`}>
+                <ProductCard product={product} onAddToCart={addToCart} showPrice={true} />
+              </Link>
             </div>
           ))}
         </div>
