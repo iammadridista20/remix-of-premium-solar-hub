@@ -85,6 +85,10 @@ const Contact = () => {
         </div>
       </section>
 
+      <div className="container pb-16">
+        <StaffDirectory />
+      </div>
+
       <Footer />
       <WhatsAppButton />
     </div>
