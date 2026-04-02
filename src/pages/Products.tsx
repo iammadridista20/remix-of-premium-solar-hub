@@ -1,5 +1,6 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
+import { Search } from "lucide-react";
 import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
 import CategoryFilter from "@/components/CategoryFilter";
@@ -7,16 +8,27 @@ import ProductCard from "@/components/ProductCard";
 import CartSheet, { type CartItem } from "@/components/CartSheet";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { Input } from "@/components/ui/input";
 import { products, type Category, type Product } from "@/data/products";
 
 const Products = () => {
   const [activeCategory, setActiveCategory] = useState<Category>("All");
+  const [searchQuery, setSearchQuery] = useState("");
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
 
-  const filtered = activeCategory === "All"
-    ? products
-    : products.filter((p) => p.category === activeCategory);
+  const filtered = useMemo(() => {
+    let result = activeCategory === "All"
+      ? products
+      : products.filter((p) => p.category === activeCategory);
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      result = result.filter(
+        (p) => p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q)
+      );
+    }
+    return result;
+  }, [activeCategory, searchQuery]);
 
   const addToCart = useCallback((product: Product) => {
     setCart((prev) => {

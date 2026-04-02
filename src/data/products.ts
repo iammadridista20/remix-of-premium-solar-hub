@@ -25,6 +25,14 @@ import felicityInverter2 from "@/assets/felicity-inverter-2.webp";
 import solarPanel250w from "@/assets/solar-panel-250w.png";
 import rg59CableRoll from "@/assets/rg59-cable-roll.jpg";
 import starplusTubularBattery from "@/assets/starplus-tubular-battery.jpg";
+import felicity35kva from "@/assets/felicity-3.5kva-inverter.jpg";
+import ptzCamera from "@/assets/ptz-camera.jpg";
+import felicity10kwhBattery from "@/assets/felicity-10kwh-battery.jpg";
+import solarPanel550w from "@/assets/solar-panel-550w.jpg";
+import ptzDomeCamera from "@/assets/ptz-dome-camera.jpg";
+import felicity8kvaHybrid from "@/assets/felicity-8kva-hybrid.jpg";
+import solarPtzCamera from "@/assets/solar-ptz-camera.jpg";
+import felicity5kvaOffgrid from "@/assets/felicity-5kva-offgrid.jpg";
 
 export type Category = "Solar" | "Inverter" | "CCTV" | "Battery" | "All";
 
@@ -265,6 +273,79 @@ export const products: Product[] = [
     price: 210000,
     image: starplusTubularBattery,
     category: "Battery",
+    badge: "New",
+  },
+  // New Felicity products
+  {
+    id: "28",
+    name: "Felicity 3.5KVA 24V Inverter",
+    description: "Felicity 3.5KVA transformer-based pure sine wave inverter. 24V system with LCD display. Ideal for homes and small offices.",
+    price: 222000,
+    image: felicity35kva,
+    category: "Inverter",
+  },
+  {
+    id: "29",
+    name: "Felicity 5KVA Off-Grid Inverter",
+    description: "Felicity 5KVA 48V pure sine wave off-grid inverter. MPPT charge controller compatible. Overload and short-circuit protection.",
+    price: 970000,
+    image: felicity5kvaOffgrid,
+    category: "Inverter",
+    badge: "Popular",
+  },
+  {
+    id: "30",
+    name: "Felicity 10KWh Lithium Battery",
+    description: "Felicity 10KWh 48V lithium iron phosphate battery. Built-in BMS with 6000+ cycle life. Compact cabinet design.",
+    price: 2800000,
+    image: felicity10kwhBattery,
+    category: "Battery",
+    badge: "Premium",
+  },
+  {
+    id: "31",
+    name: "Felicity 15KVA Hybrid Inverter",
+    description: "Felicity Solar 15KVA three-phase hybrid inverter with touchscreen display. Built-in 120A MPPT. For large commercial installations.",
+    price: 2200000,
+    image: felicity8kvaHybrid,
+    category: "Inverter",
+    badge: "Pro",
+  },
+  // New Solar products
+  {
+    id: "32",
+    name: "550W Monocrystalline Solar Panel",
+    description: "High-efficiency 550W mono PERC solar panel. Half-cut cell technology with 25-year performance warranty. Ideal for commercial rooftops.",
+    price: 275000,
+    image: solarPanel550w,
+    category: "Solar",
+  },
+  // New CCTV / PTZ products
+  {
+    id: "33",
+    name: "2MP PTZ Speed Dome Camera",
+    description: "Full HD 1080p PTZ speed dome camera with 20x optical zoom. 360° pan, 90° tilt. IR night vision up to 100m. IP66 weatherproof.",
+    price: 175000,
+    image: ptzCamera,
+    category: "CCTV",
+    badge: "New",
+  },
+  {
+    id: "34",
+    name: "Dahua 4MP Mini PTZ Dome Camera",
+    description: "Dahua 4MP mini PTZ dome IP camera with 4x optical zoom. POE powered, outdoor rated. Smart IR up to 50m. Remote pan/tilt/zoom control.",
+    price: 220000,
+    image: ptzDomeCamera,
+    category: "CCTV",
+    badge: "Popular",
+  },
+  {
+    id: "35",
+    name: "Solar 4G PTZ Camera",
+    description: "Solar-powered 4G PTZ CCTV camera with built-in solar panel. No wiring needed. 3MP dual lens, 360° rotation. Perfect for farms and remote sites.",
+    price: 185000,
+    image: solarPtzCamera,
+    category: "CCTV",
     badge: "New",
   },
 ];
