@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import StaffDirectory from "@/components/StaffDirectory";
 
 const Contact = () => {
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
@@ -84,6 +85,10 @@ const Contact = () => {
           </form>
         </div>
       </section>
+
+      <div className="container pb-16">
+        <StaffDirectory />
+      </div>
 
       <Footer />
       <WhatsAppButton />
