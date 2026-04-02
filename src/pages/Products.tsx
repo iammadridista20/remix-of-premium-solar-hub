@@ -1,5 +1,6 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
+import { Search } from "lucide-react";
 import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
 import CategoryFilter from "@/components/CategoryFilter";
@@ -7,16 +8,27 @@ import ProductCard from "@/components/ProductCard";
 import CartSheet, { type CartItem } from "@/components/CartSheet";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { Input } from "@/components/ui/input";
 import { products, type Category, type Product } from "@/data/products";
 
 const Products = () => {
   const [activeCategory, setActiveCategory] = useState<Category>("All");
+  const [searchQuery, setSearchQuery] = useState("");
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
 
-  const filtered = activeCategory === "All"
-    ? products
-    : products.filter((p) => p.category === activeCategory);
+  const filtered = useMemo(() => {
+    let result = activeCategory === "All"
+      ? products
+      : products.filter((p) => p.category === activeCategory);
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      result = result.filter(
+        (p) => p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q)
+      );
+    }
+    return result;
+  }, [activeCategory, searchQuery]);
 
   const addToCart = useCallback((product: Product) => {
     setCart((prev) => {
@@ -48,17 +60,35 @@ const Products = () => {
       <Navbar cartCount={cartCount} onCartOpen={() => setCartOpen(true)} />
 
       <section className="container py-16">
-        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h1 className="font-heading text-2xl font-bold text-foreground md:text-3xl">
-              Our Products
-            </h1>
-            <p className="text-sm text-muted-foreground mt-1">
-              Browse and shop our full range of products with prices
-            </p>
+        <div className="mb-6 flex flex-col gap-4">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h1 className="font-heading text-2xl font-bold text-foreground md:text-3xl">
+                Our Products
+              </h1>
+              <p className="text-sm text-muted-foreground mt-1">
+                Browse and shop our full range of products with prices
+              </p>
+            </div>
+            <CategoryFilter active={activeCategory} onChange={setActiveCategory} />
           </div>
-          <CategoryFilter active={activeCategory} onChange={setActiveCategory} />
+          <div className="relative max-w-md">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="search"
+              placeholder="Search products..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-9"
+            />
+          </div>
         </div>
+
+        {filtered.length === 0 && (
+          <div className="py-16 text-center">
+            <p className="text-muted-foreground">No products found matching "{searchQuery}"</p>
+          </div>
+        )}
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filtered.map((product, i) => (
