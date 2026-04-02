@@ -11,6 +11,7 @@ import Checkout from "./pages/Checkout.tsx";
 import OrderConfirmation from "./pages/OrderConfirmation.tsx";
 import Login from "./pages/Login.tsx";
 import Register from "./pages/Register.tsx";
+import AdminStaff from "./pages/AdminStaff.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
