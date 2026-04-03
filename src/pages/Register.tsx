@@ -1,21 +1,39 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Sun, UserPlus } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Sun, UserPlus, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [form, setForm] = useState({ name: "", email: "", phone: "", dob: "", password: "", confirmPassword: "" });
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (form.password !== form.confirmPassword) {
       toast.error("Passwords do not match");
       return;
     }
-    toast.info("Registration requires Lovable Cloud to be enabled for email verification.");
+    setLoading(true);
+    const { error } = await supabase.auth.signUp({
+      email: form.email,
+      password: form.password,
+      options: {
+        data: { full_name: form.name, phone: form.phone, dob: form.dob },
+        emailRedirectTo: window.location.origin,
+      },
+    });
+    setLoading(false);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success("Account created! You can now sign in.");
+    navigate("/login");
   };
 
   return (
@@ -55,8 +73,8 @@ const Register = () => {
             <Label htmlFor="confirmPassword">Confirm Password</Label>
             <Input id="confirmPassword" type="password" required value={form.confirmPassword} onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })} placeholder="••••••••" />
           </div>
-          <Button type="submit" className="w-full gap-2">
-            <UserPlus className="h-4 w-4" /> Create Account
+          <Button type="submit" className="w-full gap-2" disabled={loading}>
+            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UserPlus className="h-4 w-4" />} Create Account
           </Button>
         </form>
 
