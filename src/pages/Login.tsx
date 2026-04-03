@@ -1,17 +1,31 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Sun, LogIn } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Sun, LogIn, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [form, setForm] = useState({ email: "", password: "" });
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.info("Login functionality requires Lovable Cloud to be enabled.");
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: form.email,
+      password: form.password,
+    });
+    setLoading(false);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success("Signed in successfully!");
+    navigate("/");
   };
 
   return (
@@ -28,15 +42,15 @@ const Login = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4 rounded-lg bg-card p-6 shadow-card">
           <div className="space-y-2">
-            <Label htmlFor="email">Email or Username</Label>
-            <Input id="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="you@example.com" />
+            <Label htmlFor="email">Email</Label>
+            <Input id="email" type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="you@example.com" />
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
             <Input id="password" type="password" required value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder="••••••••" />
           </div>
-          <Button type="submit" className="w-full gap-2">
-            <LogIn className="h-4 w-4" /> Sign In
+          <Button type="submit" className="w-full gap-2" disabled={loading}>
+            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <LogIn className="h-4 w-4" />} Sign In
           </Button>
         </form>
 
