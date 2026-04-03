@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      installation_bookings: {
+        Row: {
+          address: string
+          created_at: string
+          customer_name: string
+          email: string
+          id: string
+          message: string | null
+          phone: string
+          preferred_date: string | null
+          service_type: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          address: string
+          created_at?: string
+          customer_name: string
+          email: string
+          id?: string
+          message?: string | null
+          phone: string
+          preferred_date?: string | null
+          service_type: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          address?: string
+          created_at?: string
+          customer_name?: string
+          email?: string
+          id?: string
+          message?: string | null
+          phone?: string
+          preferred_date?: string | null
+          service_type?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       staff_members: {
         Row: {
           bio: string | null

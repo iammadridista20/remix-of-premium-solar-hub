@@ -1,6 +1,7 @@
-import { ShoppingCart, Sun, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { ShoppingCart, Sun, Menu, X, Settings } from "lucide-react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 
 interface NavbarProps {
   cartCount: number;
@@ -9,6 +10,26 @@ interface NavbarProps {
 
 const Navbar = ({ cartCount, onCartOpen }: NavbarProps) => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const checkAdmin = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data } = await supabase.rpc("has_role", { _user_id: user.id, _role: "admin" });
+        setIsAdmin(!!data);
+      }
+    };
+    checkAdmin();
+  }, []);
+
+  const navLinks = [
+    { to: "/", label: "Home" },
+    { to: "/products", label: "Products" },
+    { to: "/book-installation", label: "Book Installation" },
+    { to: "/contact", label: "Contact" },
+    { to: "/login", label: "Login" },
+  ];
 
   return (
     <header className="sticky top-0 z-40 border-b bg-card/80 backdrop-blur-md">
@@ -21,11 +42,16 @@ const Navbar = ({ cartCount, onCartOpen }: NavbarProps) => {
         </Link>
 
         <nav className="hidden md:flex items-center gap-6">
-          <Link to="/" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Home</Link>
-          <Link to="/products" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Products</Link>
-          <a href="/#about" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">About</a>
-          <Link to="/contact" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Contact</Link>
-          <Link to="/login" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">Login</Link>
+          {navLinks.map((link) => (
+            <Link key={link.to} to={link.to} className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+              {link.label}
+            </Link>
+          ))}
+          {isAdmin && (
+            <Link to="/admin/staff" className="text-sm font-medium text-primary transition-colors hover:text-primary/80 flex items-center gap-1">
+              <Settings className="h-3.5 w-3.5" /> Admin
+            </Link>
+          )}
         </nav>
 
         <div className="flex items-center gap-3">
@@ -51,11 +77,16 @@ const Navbar = ({ cartCount, onCartOpen }: NavbarProps) => {
 
       {mobileOpen && (
         <nav className="md:hidden border-t bg-card p-4 space-y-3">
-          <Link to="/" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-muted-foreground hover:text-foreground">Home</Link>
-          <Link to="/products" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-muted-foreground hover:text-foreground">Products</Link>
-          <a href="/#about" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-muted-foreground hover:text-foreground">About</a>
-          <Link to="/contact" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-muted-foreground hover:text-foreground">Contact</Link>
-          <Link to="/login" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-muted-foreground hover:text-foreground">Login</Link>
+          {navLinks.map((link) => (
+            <Link key={link.to} to={link.to} onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-muted-foreground hover:text-foreground">
+              {link.label}
+            </Link>
+          ))}
+          {isAdmin && (
+            <Link to="/admin/staff" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-primary hover:text-primary/80">
+              ⚙️ Admin Panel
+            </Link>
+          )}
         </nav>
       )}
     </header>
