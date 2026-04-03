@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import { Phone, Wrench, Shield, Award } from "lucide-react";
+import { Phone, Wrench, Shield, Award, Pencil, Plus } from "lucide-react";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
+import { Button } from "@/components/ui/button";
 
 const roleIcon = (role: string) => {
   if (role.toLowerCase().includes("ceo") || role.toLowerCase().includes("manager")) return Shield;
@@ -12,6 +14,7 @@ const roleIcon = (role: string) => {
 const StaffDirectory = () => {
   const [staff, setStaff] = useState<Tables<"staff_members">[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const fetchStaff = async () => {
@@ -22,7 +25,17 @@ const StaffDirectory = () => {
       if (data) setStaff(data);
       setLoading(false);
     };
+
+    const checkAdmin = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data } = await supabase.rpc("has_role", { _user_id: user.id, _role: "admin" });
+        setIsAdmin(!!data);
+      }
+    };
+
     fetchStaff();
+    checkAdmin();
   }, []);
 
   if (loading) {
@@ -35,14 +48,23 @@ const StaffDirectory = () => {
     );
   }
 
-  if (staff.length === 0) return null;
+  if (staff.length === 0 && !isAdmin) return null;
 
   return (
     <section className="mt-16">
       <div className="text-center mb-8">
-        <h2 className="font-heading text-xl font-bold text-foreground md:text-2xl mb-2">
-          Our Installation Team
-        </h2>
+        <div className="flex items-center justify-center gap-3 mb-2">
+          <h2 className="font-heading text-xl font-bold text-foreground md:text-2xl">
+            Our Installation Team
+          </h2>
+          {isAdmin && (
+            <Link to="/admin/staff">
+              <Button size="sm" variant="outline" className="gap-1.5">
+                <Pencil className="h-3.5 w-3.5" /> Manage Team
+              </Button>
+            </Link>
+          )}
+        </div>
         <p className="text-muted-foreground text-sm max-w-lg mx-auto">
           We provide professional installation services when you purchase products.
           Our experienced team will be assigned to your project for on-site setup.
