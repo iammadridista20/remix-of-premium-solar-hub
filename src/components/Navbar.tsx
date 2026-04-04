@@ -1,7 +1,8 @@
-import { ShoppingCart, Sun, Menu, X, Settings } from "lucide-react";
+import { ShoppingCart, Menu, X, Settings, LogOut, User } from "lucide-react";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import premiumSolarLogo from "@/assets/premium-solar-logo.png";
 
 interface NavbarProps {
   cartCount: number;
@@ -11,46 +12,74 @@ interface NavbarProps {
 const Navbar = ({ cartCount, onCartOpen }: NavbarProps) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const checkAdmin = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        const { data } = await supabase.rpc("has_role", { _user_id: user.id, _role: "admin" });
-        setIsAdmin(!!data);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        checkAdmin(session.user.id);
+      } else {
+        setIsAdmin(false);
       }
-    };
-    checkAdmin();
+    });
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        checkAdmin(session.user.id);
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
+
+  const checkAdmin = async (userId: string) => {
+    const { data } = await supabase.rpc("has_role", { _user_id: userId, _role: "admin" });
+    setIsAdmin(!!data);
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+    setIsAdmin(false);
+    navigate("/");
+  };
 
   const navLinks = [
     { to: "/", label: "Home" },
     { to: "/products", label: "Products" },
+    { to: "/installation-pricing", label: "Pricing" },
     { to: "/book-installation", label: "Book Installation" },
     { to: "/contact", label: "Contact" },
-    { to: "/login", label: "Login" },
   ];
 
   return (
     <header className="sticky top-0 z-40 border-b bg-card/80 backdrop-blur-md">
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
-          <Sun className="h-7 w-7 text-secondary" />
+          <img src={premiumSolarLogo} alt="Premium Solar" className="h-9 w-9" width={36} height={36} />
           <span className="font-heading text-lg font-bold text-foreground leading-tight">
             Premium Solar
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-6">
+        <nav className="hidden md:flex items-center gap-5">
           {navLinks.map((link) => (
             <Link key={link.to} to={link.to} className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
               {link.label}
             </Link>
           ))}
           {isAdmin && (
-            <Link to="/admin/staff" className="text-sm font-medium text-primary transition-colors hover:text-primary/80 flex items-center gap-1">
-              <Settings className="h-3.5 w-3.5" /> Admin
-            </Link>
+            <>
+              <Link to="/admin/staff" className="text-sm font-medium text-primary transition-colors hover:text-primary/80 flex items-center gap-1">
+                <Settings className="h-3.5 w-3.5" /> Staff
+              </Link>
+              <Link to="/admin/bookings" className="text-sm font-medium text-primary transition-colors hover:text-primary/80 flex items-center gap-1">
+                Bookings
+              </Link>
+            </>
           )}
         </nav>
 
@@ -66,6 +95,23 @@ const Navbar = ({ cartCount, onCartOpen }: NavbarProps) => {
               </span>
             )}
           </button>
+
+          {user ? (
+            <button
+              onClick={handleLogout}
+              className="hidden md:flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-muted transition-colors"
+            >
+              <LogOut className="h-4 w-4" /> Logout
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              className="hidden md:flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-muted transition-colors"
+            >
+              <User className="h-4 w-4" /> Login
+            </Link>
+          )}
+
           <button
             className="md:hidden rounded-full p-2 text-muted-foreground hover:bg-muted"
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -83,8 +129,22 @@ const Navbar = ({ cartCount, onCartOpen }: NavbarProps) => {
             </Link>
           ))}
           {isAdmin && (
-            <Link to="/admin/staff" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-primary hover:text-primary/80">
-              ⚙️ Admin Panel
+            <>
+              <Link to="/admin/staff" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-primary hover:text-primary/80">
+                ⚙️ Staff Management
+              </Link>
+              <Link to="/admin/bookings" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-primary hover:text-primary/80">
+                📋 Bookings Dashboard
+              </Link>
+            </>
+          )}
+          {user ? (
+            <button onClick={() => { handleLogout(); setMobileOpen(false); }} className="block text-sm font-medium text-destructive hover:text-destructive/80">
+              Logout
+            </button>
+          ) : (
+            <Link to="/login" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-muted-foreground hover:text-foreground">
+              Login
             </Link>
           )}
         </nav>
