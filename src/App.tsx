@@ -12,6 +12,8 @@ import OrderConfirmation from "./pages/OrderConfirmation.tsx";
 import Login from "./pages/Login.tsx";
 import Register from "./pages/Register.tsx";
 import AdminStaff from "./pages/AdminStaff.tsx";
+import AdminBookings from "./pages/AdminBookings.tsx";
+import InstallationPricing from "./pages/InstallationPricing.tsx";
 import BookInstallation from "./pages/BookInstallation.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
