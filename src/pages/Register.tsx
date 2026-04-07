@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Sun, UserPlus, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -9,6 +9,8 @@ import { Label } from "@/components/ui/label";
 
 const Register = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo") || "/";
   const [form, setForm] = useState({ name: "", email: "", phone: "", dob: "", password: "", confirmPassword: "" });
   const [loading, setLoading] = useState(false);
 
@@ -33,7 +35,7 @@ const Register = () => {
       return;
     }
     toast.success("Account created! You can now sign in.");
-    navigate("/login");
+    navigate(redirectTo === "/" ? "/login" : `/login?redirectTo=${encodeURIComponent(redirectTo)}`);
   };
 
   return (
@@ -80,7 +82,7 @@ const Register = () => {
 
         <p className="text-center text-sm text-muted-foreground">
           Already have an account?{" "}
-          <Link to="/login" className="font-medium text-secondary hover:underline">Sign in</Link>
+          <Link to={`/login${redirectTo !== "/" ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""}`} className="font-medium text-secondary hover:underline">Sign in</Link>
         </p>
         <p className="text-center">
           <Link to="/" className="text-sm text-muted-foreground hover:text-foreground">← Back to Home</Link>

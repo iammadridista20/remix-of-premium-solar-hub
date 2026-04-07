@@ -1,6 +1,9 @@
+import { useState, useEffect } from "react";
 import { Minus, Plus, Trash2, X, MessageCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 import type { Product } from "@/data/products";
 import { formatNaira } from "@/data/products";
 
@@ -18,7 +21,27 @@ interface CartSheetProps {
 
 const CartSheet = ({ open, onClose, items, onUpdateQuantity, onRemove }: CartSheetProps) => {
   const navigate = useNavigate();
+  const [user, setUser] = useState<any>(null);
   const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setUser(data.user));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
+      setUser(session?.user ?? null);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleCheckout = () => {
+    if (!user) {
+      toast.error("Please sign in to checkout");
+      onClose();
+      navigate("/login?redirectTo=/products");
+      return;
+    }
+    onClose();
+    navigate("/checkout", { state: { items } });
+  };
 
   return (
     <>
@@ -48,23 +71,14 @@ const CartSheet = ({ open, onClose, items, onUpdateQuantity, onRemove }: CartShe
                   <h4 className="text-sm font-semibold text-card-foreground line-clamp-1">{item.name}</h4>
                   <span className="text-sm font-bold text-secondary">{formatNaira(item.price)}</span>
                   <div className="flex items-center gap-2 mt-1">
-                    <button
-                      onClick={() => onUpdateQuantity(item.id, -1)}
-                      className="rounded bg-muted p-1 text-muted-foreground hover:bg-border"
-                    >
+                    <button onClick={() => onUpdateQuantity(item.id, -1)} className="rounded bg-muted p-1 text-muted-foreground hover:bg-border">
                       <Minus className="h-3 w-3" />
                     </button>
                     <span className="text-sm font-medium w-6 text-center">{item.quantity}</span>
-                    <button
-                      onClick={() => onUpdateQuantity(item.id, 1)}
-                      className="rounded bg-muted p-1 text-muted-foreground hover:bg-border"
-                    >
+                    <button onClick={() => onUpdateQuantity(item.id, 1)} className="rounded bg-muted p-1 text-muted-foreground hover:bg-border">
                       <Plus className="h-3 w-3" />
                     </button>
-                    <button
-                      onClick={() => onRemove(item.id)}
-                      className="ml-auto rounded p-1 text-destructive hover:bg-destructive/10"
-                    >
+                    <button onClick={() => onRemove(item.id)} className="ml-auto rounded p-1 text-destructive hover:bg-destructive/10">
                       <Trash2 className="h-3.5 w-3.5" />
                     </button>
                   </div>
@@ -83,17 +97,14 @@ const CartSheet = ({ open, onClose, items, onUpdateQuantity, onRemove }: CartShe
             <Button
               className="w-full gradient-accent text-accent-foreground font-semibold shadow-accent border-0 hover:opacity-90"
               size="lg"
-              onClick={() => {
-                onClose();
-                navigate("/checkout", { state: { items } });
-              }}
+              onClick={handleCheckout}
             >
               Checkout
             </Button>
             <Button
               variant="outline"
               size="lg"
-              className="w-full gap-2 border-green-500 text-green-600 hover:bg-green-50 font-semibold"
+              className="w-full gap-2 border-secondary/50 text-secondary hover:bg-secondary/10 font-semibold"
               onClick={() => {
                 const message = items
                   .map((i) => `• ${i.name} x${i.quantity} — ${formatNaira(i.price * i.quantity)}`)
