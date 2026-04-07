@@ -12,10 +12,20 @@ import { Input } from "@/components/ui/input";
 import { products, type Category, type Product } from "@/data/products";
 
 const Products = () => {
+  const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState<Category>("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setUser(data.user));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
+      setUser(session?.user ?? null);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
 
   const filtered = useMemo(() => {
     let result = activeCategory === "All"
@@ -31,6 +41,11 @@ const Products = () => {
   }, [activeCategory, searchQuery]);
 
   const addToCart = useCallback((product: Product) => {
+    if (!user) {
+      toast.error("Please sign in to add items to cart");
+      navigate("/login?redirectTo=/products");
+      return;
+    }
     setCart((prev) => {
       const existing = prev.find((i) => i.id === product.id);
       if (existing) {
@@ -39,7 +54,7 @@ const Products = () => {
       return [...prev, { ...product, quantity: 1 }];
     });
     toast.success(`${product.name} added to cart`);
-  }, []);
+  }, [user, navigate]);
 
   const updateQuantity = useCallback((id: string, delta: number) => {
     setCart((prev) =>

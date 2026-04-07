@@ -1,6 +1,9 @@
+import { useState, useEffect } from "react";
 import { Minus, Plus, Trash2, X, MessageCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 import type { Product } from "@/data/products";
 import { formatNaira } from "@/data/products";
 
@@ -18,7 +21,27 @@ interface CartSheetProps {
 
 const CartSheet = ({ open, onClose, items, onUpdateQuantity, onRemove }: CartSheetProps) => {
   const navigate = useNavigate();
+  const [user, setUser] = useState<any>(null);
   const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setUser(data.user));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
+      setUser(session?.user ?? null);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleCheckout = () => {
+    if (!user) {
+      toast.error("Please sign in to checkout");
+      onClose();
+      navigate("/login?redirectTo=/products");
+      return;
+    }
+    onClose();
+    navigate("/checkout", { state: { items } });
+  };
 
   return (
     <>

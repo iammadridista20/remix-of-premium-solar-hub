@@ -56,7 +56,7 @@ const Login = () => {
 
         <p className="text-center text-sm text-muted-foreground">
           Don't have an account?{" "}
-          <Link to="/register" className="font-medium text-secondary hover:underline">Create one</Link>
+          <Link to={`/register${redirectTo !== "/" ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""}`} className="font-medium text-secondary hover:underline">Create one</Link>
         </p>
         <p className="text-center">
           <Link to="/" className="text-sm text-muted-foreground hover:text-foreground">← Back to Home</Link>

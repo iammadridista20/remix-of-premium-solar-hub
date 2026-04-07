@@ -80,7 +80,7 @@ const Register = () => {
 
         <p className="text-center text-sm text-muted-foreground">
           Already have an account?{" "}
-          <Link to="/login" className="font-medium text-secondary hover:underline">Sign in</Link>
+          <Link to={`/login${redirectTo !== "/login" ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""}`} className="font-medium text-secondary hover:underline">Sign in</Link>
         </p>
         <p className="text-center">
           <Link to="/" className="text-sm text-muted-foreground hover:text-foreground">← Back to Home</Link>
