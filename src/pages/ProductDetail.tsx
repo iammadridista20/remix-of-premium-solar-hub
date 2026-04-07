@@ -1,7 +1,8 @@
-import { useState, useCallback } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useState, useCallback, useEffect } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, ShoppingCart, Shield, Truck, Headphones } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/Navbar";

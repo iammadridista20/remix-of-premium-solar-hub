@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Sun, LogIn, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -9,6 +9,8 @@ import { Label } from "@/components/ui/label";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo") || "/";
   const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
 
@@ -25,7 +27,7 @@ const Login = () => {
       return;
     }
     toast.success("Signed in successfully!");
-    navigate("/");
+    navigate(redirectTo);
   };
 
   return (
