@@ -10,10 +10,11 @@ import CartSheet, { type CartItem } from "@/components/CartSheet";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { Input } from "@/components/ui/input";
-import { products, type Category, type Product } from "@/data/products";
+import { useProducts, type DBProduct, type Category, formatNaira } from "@/hooks/useProducts";
 
 const Products = () => {
   const navigate = useNavigate();
+  const { products, loading: productsLoading } = useProducts();
   const [activeCategory, setActiveCategory] = useState<Category>("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -39,9 +40,9 @@ const Products = () => {
       );
     }
     return result;
-  }, [activeCategory, searchQuery]);
+  }, [activeCategory, searchQuery, products]);
 
-  const addToCart = useCallback((product: Product) => {
+  const addToCart = useCallback((product: DBProduct) => {
     if (!user) {
       toast.error("Please sign in to add items to cart");
       navigate("/login?redirectTo=/products");
@@ -88,21 +89,25 @@ const Products = () => {
           </div>
         </div>
 
-        {filtered.length === 0 && (
+        {productsLoading ? (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {[1,2,3,4].map(i => <div key={i} className="aspect-square bg-muted/50 rounded-lg animate-pulse" />)}
+          </div>
+        ) : filtered.length === 0 ? (
           <div className="py-16 text-center">
-            <p className="text-muted-foreground">No products found matching "{searchQuery}"</p>
+            <p className="text-muted-foreground">No products found{searchQuery ? ` matching "${searchQuery}"` : ""}</p>
+          </div>
+        ) : (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {filtered.map((product, i) => (
+              <div key={product.id} className="animate-fade-in-up" style={{ animationDelay: `${i * 80}ms`, opacity: 0 }}>
+                <Link to={`/product/${product.id}`}>
+                  <ProductCard product={product} onAddToCart={addToCart} showPrice={true} />
+                </Link>
+              </div>
+            ))}
           </div>
         )}
-
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {filtered.map((product, i) => (
-            <div key={product.id} className="animate-fade-in-up" style={{ animationDelay: `${i * 80}ms`, opacity: 0 }}>
-              <Link to={`/product/${product.id}`}>
-                <ProductCard product={product} onAddToCart={addToCart} showPrice={true} />
-              </Link>
-            </div>
-          ))}
-        </div>
       </section>
 
       <Footer />
