@@ -1,4 +1,4 @@
-import { ShoppingCart, Menu, X, Settings, LogOut, User } from "lucide-react";
+import { ShoppingCart, Menu, X, Settings, LogOut, User, Package } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -79,6 +79,9 @@ const Navbar = ({ cartCount, onCartOpen }: NavbarProps) => {
               <Link to="/admin/bookings" className="text-sm font-medium text-primary transition-colors hover:text-primary/80 flex items-center gap-1">
                 Bookings
               </Link>
+              <Link to="/admin/products" className="text-sm font-medium text-primary transition-colors hover:text-primary/80 flex items-center gap-1">
+                <Package className="h-3.5 w-3.5" /> Products
+              </Link>
             </>
           )}
         </nav>
@@ -135,6 +138,9 @@ const Navbar = ({ cartCount, onCartOpen }: NavbarProps) => {
               </Link>
               <Link to="/admin/bookings" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-primary hover:text-primary/80">
                 📋 Bookings Dashboard
+              </Link>
+              <Link to="/admin/products" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-primary hover:text-primary/80">
+                📦 Product Management
               </Link>
             </>
           )}
