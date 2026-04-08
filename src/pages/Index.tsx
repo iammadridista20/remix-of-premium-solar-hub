@@ -6,9 +6,10 @@ import HeroSection from "@/components/HeroSection";
 import ProductCard from "@/components/ProductCard";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import { products } from "@/data/products";
+import { useProducts } from "@/hooks/useProducts";
 
 const Index = () => {
+  const { products, loading } = useProducts();
   const featured = products.slice(0, 8);
 
   return (
@@ -33,19 +34,25 @@ const Index = () => {
           </Link>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {featured.map((product, i) => (
-            <div
-              key={product.id}
-              className="animate-fade-in-up"
-              style={{ animationDelay: `${i * 80}ms`, opacity: 0 }}
-            >
-              <Link to={`/product/${product.id}`}>
-                <ProductCard product={product} showPrice={false} />
-              </Link>
-            </div>
-          ))}
-        </div>
+        {loading ? (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {[1,2,3,4].map(i => <div key={i} className="aspect-square bg-muted/50 rounded-lg animate-pulse" />)}
+          </div>
+        ) : (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {featured.map((product, i) => (
+              <div
+                key={product.id}
+                className="animate-fade-in-up"
+                style={{ animationDelay: `${i * 80}ms`, opacity: 0 }}
+              >
+                <Link to={`/product/${product.id}`}>
+                  <ProductCard product={product} showPrice={false} />
+                </Link>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
 
       <section id="about" className="bg-muted/50">

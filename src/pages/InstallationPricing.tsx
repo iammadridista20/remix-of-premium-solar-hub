@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { Button } from "@/components/ui/button";
-import { formatNaira } from "@/data/products";
+import { formatNaira } from "@/hooks/useProducts";
 
 interface PricingItem {
   service: string;

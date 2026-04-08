@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import type { Product } from "@/data/products";
-import { formatNaira } from "@/data/products";
+import type { DBProduct } from "@/hooks/useProducts";
+import { formatNaira } from "@/hooks/useProducts";
 
-export interface CartItem extends Product {
+export interface CartItem extends DBProduct {
   quantity: number;
 }
 

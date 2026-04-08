@@ -10,12 +10,14 @@ import CartSheet, { type CartItem } from "@/components/CartSheet";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import ProductCard from "@/components/ProductCard";
-import { products, formatNaira, type Product } from "@/data/products";
+import { formatNaira, type DBProduct } from "@/hooks/useProducts";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const product = products.find((p) => p.id === id);
+  const [product, setProduct] = useState<DBProduct | null>(null);
+  const [related, setRelated] = useState<DBProduct[]>([]);
+  const [loading, setLoading] = useState(true);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
@@ -28,7 +30,26 @@ const ProductDetail = () => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const addToCart = useCallback((p: Product) => {
+  useEffect(() => {
+    const fetchProduct = async () => {
+      setLoading(true);
+      const { data } = await supabase.from("products").select("*").eq("id", id).maybeSingle();
+      if (data) {
+        setProduct(data as unknown as DBProduct);
+        const { data: rel } = await supabase
+          .from("products")
+          .select("*")
+          .eq("category", data.category)
+          .neq("id", data.id)
+          .limit(4);
+        if (rel) setRelated(rel as unknown as DBProduct[]);
+      }
+      setLoading(false);
+    };
+    if (id) fetchProduct();
+  }, [id]);
+
+  const addToCart = useCallback((p: DBProduct) => {
     if (!user) {
       toast.error("Please sign in to add items to cart");
       navigate(`/login?redirectTo=/product/${id}`);
@@ -52,6 +73,17 @@ const ProductDetail = () => {
 
   const cartCount = cart.reduce((sum, i) => sum + i.quantity, 0);
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Navbar cartCount={0} onCartOpen={() => {}} />
+        <div className="flex-1 flex items-center justify-center">
+          <p className="text-muted-foreground">Loading product...</p>
+        </div>
+      </div>
+    );
+  }
+
   if (!product) {
     return (
       <div className="min-h-screen flex flex-col">
@@ -66,8 +98,6 @@ const ProductDetail = () => {
       </div>
     );
   }
-
-  const related = products.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 4);
 
   return (
     <div className="min-h-screen flex flex-col">

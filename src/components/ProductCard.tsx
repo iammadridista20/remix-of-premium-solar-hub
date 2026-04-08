@@ -1,12 +1,12 @@
 import { ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import type { Product } from "@/data/products";
-import { formatNaira } from "@/data/products";
+import type { DBProduct } from "@/hooks/useProducts";
+import { formatNaira } from "@/hooks/useProducts";
 
 interface ProductCardProps {
-  product: Product;
-  onAddToCart?: (product: Product) => void;
+  product: DBProduct;
+  onAddToCart?: (product: DBProduct) => void;
   showPrice?: boolean;
 }
 
@@ -47,7 +47,7 @@ const ProductCard = ({ product, onAddToCart, showPrice = true }: ProductCardProp
               <Button
                 size="sm"
                 variant="default"
-                onClick={() => onAddToCart(product)}
+                onClick={(e) => { e.preventDefault(); onAddToCart(product); }}
                 className="gap-1.5"
               >
                 <ShoppingCart className="h-4 w-4" />

@@ -1,4 +1,4 @@
-import type { Category } from "@/data/products";
+import type { Category } from "@/hooks/useProducts";
 
 interface CategoryFilterProps {
   active: Category;

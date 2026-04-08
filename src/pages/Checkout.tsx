@@ -8,7 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import type { CartItem } from "@/components/CartSheet";
-import { formatNaira } from "@/data/products";
+import { formatNaira } from "@/hooks/useProducts";
 
 const Checkout = () => {
   const navigate = useNavigate();

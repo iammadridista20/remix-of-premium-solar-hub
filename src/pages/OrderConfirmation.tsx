@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { formatNaira } from "@/data/products";
+import { formatNaira } from "@/hooks/useProducts";
 
 const OrderConfirmation = () => {
   const navigate = useNavigate();
