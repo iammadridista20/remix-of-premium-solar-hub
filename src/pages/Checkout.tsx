@@ -48,7 +48,7 @@ const Checkout = () => {
     return digits;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.firstName || !form.lastName || !form.email || !form.phone || !form.address || !form.city || !form.state) {
       toast.error("Please fill in all personal details");
@@ -59,11 +59,40 @@ const Checkout = () => {
       return;
     }
     setProcessing(true);
-    setTimeout(() => {
-      setProcessing(false);
+
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) { toast.error("Please sign in"); setProcessing(false); return; }
+
+      const { data: order, error: orderErr } = await supabase.from("orders").insert({
+        user_id: user.id,
+        customer_name: `${form.firstName} ${form.lastName}`,
+        email: form.email,
+        phone: form.phone,
+        shipping_address: `${form.address}, ${form.city}, ${form.state}`,
+        subtotal,
+        delivery_fee: deliveryFee,
+        total,
+        status: "pending",
+      }).select().single();
+
+      if (orderErr || !order) { toast.error("Order failed: " + (orderErr?.message || "Unknown error")); setProcessing(false); return; }
+
+      const orderItems = items.map((item) => ({
+        order_id: order.id,
+        product_name: item.name,
+        product_price: item.price,
+        quantity: item.quantity,
+      }));
+      await supabase.from("order_items").insert(orderItems);
+
       toast.success("Payment successful! Your order has been placed.");
       navigate("/order-confirmation", { state: { items, total, form } });
-    }, 2500);
+    } catch {
+      toast.error("Something went wrong");
+    } finally {
+      setProcessing(false);
+    }
   };
 
   if (items.length === 0) {
