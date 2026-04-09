@@ -10,6 +10,8 @@ import Contact from "./pages/Contact.tsx";
 import Checkout from "./pages/Checkout.tsx";
 import OrderConfirmation from "./pages/OrderConfirmation.tsx";
 import Login from "./pages/Login.tsx";
+import ForgotPassword from "./pages/ForgotPassword.tsx";
+import ResetPassword from "./pages/ResetPassword.tsx";
 import Register from "./pages/Register.tsx";
 import AdminStaff from "./pages/AdminStaff.tsx";
 import AdminBookings from "./pages/AdminBookings.tsx";
@@ -35,6 +37,8 @@ const App = () => (
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/order-confirmation" element={<OrderConfirmation />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/register" element={<Register />} />
           <Route path="/admin/staff" element={<AdminStaff />} />
           <Route path="/admin/bookings" element={<AdminBookings />} />
