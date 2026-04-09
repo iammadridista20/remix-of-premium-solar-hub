@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { formatNaira, type DBProduct } from "@/hooks/useProducts";
+import ImageUpload from "@/components/ImageUpload";
 
 interface ProductForm {
   name: string;
@@ -219,8 +220,8 @@ const AdminProducts = () => {
               </div>
             </div>
             <div className="space-y-2">
-              <Label>Image URL</Label>
-              <Input value={form.image} onChange={(e) => setForm({ ...form, image: e.target.value })} placeholder="https://..." />
+              <Label>Product Image</Label>
+              <ImageUpload value={form.image} onChange={(url) => setForm({ ...form, image: url })} />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">

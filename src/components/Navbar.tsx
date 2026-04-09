@@ -1,4 +1,4 @@
-import { ShoppingCart, Menu, X, Settings, LogOut, User, Package } from "lucide-react";
+import { ShoppingCart, Menu, X, Settings, LogOut, User, Package, ClipboardList } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -100,12 +100,20 @@ const Navbar = ({ cartCount, onCartOpen }: NavbarProps) => {
           </button>
 
           {user ? (
-            <button
-              onClick={handleLogout}
-              className="hidden md:flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-muted transition-colors"
-            >
-              <LogOut className="h-4 w-4" /> Logout
-            </button>
+            <>
+              <Link
+                to="/orders"
+                className="hidden md:flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-muted transition-colors"
+              >
+                <ClipboardList className="h-4 w-4" /> Orders
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="hidden md:flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-muted transition-colors"
+              >
+                <LogOut className="h-4 w-4" /> Logout
+              </button>
+            </>
           ) : (
             <Link
               to="/login"
@@ -145,9 +153,14 @@ const Navbar = ({ cartCount, onCartOpen }: NavbarProps) => {
             </>
           )}
           {user ? (
-            <button onClick={() => { handleLogout(); setMobileOpen(false); }} className="block text-sm font-medium text-destructive hover:text-destructive/80">
-              Logout
-            </button>
+            <>
+              <Link to="/orders" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-muted-foreground hover:text-foreground">
+                📋 My Orders
+              </Link>
+              <button onClick={() => { handleLogout(); setMobileOpen(false); }} className="block text-sm font-medium text-destructive hover:text-destructive/80">
+                Logout
+              </button>
+            </>
           ) : (
             <Link to="/login" onClick={() => setMobileOpen(false)} className="block text-sm font-medium text-muted-foreground hover:text-foreground">
               Login

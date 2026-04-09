@@ -16,6 +16,7 @@ import AdminBookings from "./pages/AdminBookings.tsx";
 import AdminProducts from "./pages/AdminProducts.tsx";
 import InstallationPricing from "./pages/InstallationPricing.tsx";
 import BookInstallation from "./pages/BookInstallation.tsx";
+import OrderHistory from "./pages/OrderHistory.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -38,6 +39,7 @@ const App = () => (
           <Route path="/admin/staff" element={<AdminStaff />} />
           <Route path="/admin/bookings" element={<AdminBookings />} />
           <Route path="/admin/products" element={<AdminProducts />} />
+          <Route path="/orders" element={<OrderHistory />} />
           <Route path="/book-installation" element={<BookInstallation />} />
           <Route path="/installation-pricing" element={<InstallationPricing />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
